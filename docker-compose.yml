@@ -1,0 +1,10 @@
+services:
+  mini-miloco:
+    build: .
+    image: mini-miloco:local
+    container_name: mini-miloco
+    restart: unless-stopped
+    ports:
+      - "2324:2324"
+    volumes:
+      - "${HOME}/.mini-miloco:/data"
