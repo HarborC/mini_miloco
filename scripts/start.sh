@@ -31,16 +31,44 @@ for arg in "$@"; do
   esac
 done
 
-if [[ -n "${MINI_MILOCO_PY:-}" ]]; then
-  PYTHON="$MINI_MILOCO_PY"
-elif [[ -x "$VENV_DIR/bin/python" ]]; then
-  PYTHON="$VENV_DIR/bin/python"
-else
-  PYTHON="python3"
+choose_python() {
+  if [[ -n "${MINI_MILOCO_PY:-}" ]]; then
+    echo "$MINI_MILOCO_PY"
+    return 0
+  fi
+  if [[ -x "$VENV_DIR/bin/python" ]]; then
+    echo "$VENV_DIR/bin/python"
+    return 0
+  fi
+  for cand in python3.12 python3.11 python3.10 python3; do
+    if command -v "$cand" >/dev/null 2>&1; then
+      echo "$cand"
+      return 0
+    fi
+  done
+  return 1
+}
+
+PYTHON="$(choose_python || true)"
+if [[ -z "$PYTHON" ]]; then
+  echo "Python >= 3.10 is required, but no python3 was found."
+  exit 1
+fi
+
+PY_VERSION="$("$PYTHON" -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')"
+PY_MAJOR="${PY_VERSION%%.*}"
+PY_MINOR="${PY_VERSION#*.}"
+if (( PY_MAJOR < 3 || (PY_MAJOR == 3 && PY_MINOR < 10) )); then
+  echo "Python >= 3.10 is required, but found $PY_VERSION at: $PYTHON"
+  echo "Please install python3.10+ or set MINI_MILOCO_PY to a newer interpreter."
+  exit 1
+fi
+
+if [[ ! -x "$VENV_DIR/bin/python" ]]; then
   mkdir -p "$STATE_DIR"
   "$PYTHON" -m venv "$VENV_DIR"
-  PYTHON="$VENV_DIR/bin/python"
 fi
+PYTHON="$VENV_DIR/bin/python"
 
 echo "Using Python: $PYTHON"
 
