@@ -4,7 +4,6 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 STATE_DIR="${MINI_MILOCO_STATE_DIR:-$HOME/.mini-miloco}"
-VENV_DIR="${MINI_MILOCO_VENV_DIR:-$STATE_DIR/.venv}"
 TOKEN_FILE="${MINI_MILOCO_TOKEN_FILE:-$STATE_DIR/miot_oauth.json}"
 HOST="${MINI_MILOCO_HOST:-127.0.0.1}"
 PORT="${MINI_MILOCO_PORT:-9000}"
@@ -36,11 +35,7 @@ choose_python() {
     echo "$MINI_MILOCO_PY"
     return 0
   fi
-  if [[ -x "$VENV_DIR/bin/python" ]]; then
-    echo "$VENV_DIR/bin/python"
-    return 0
-  fi
-  for cand in python3.12 python3.11 python3.10 python3; do
+  for cand in python python3.12 python3.11 python3.10 python3; do
     if command -v "$cand" >/dev/null 2>&1; then
       echo "$cand"
       return 0
@@ -64,21 +59,7 @@ if (( PY_MAJOR < 3 || (PY_MAJOR == 3 && PY_MINOR < 10) )); then
   exit 1
 fi
 
-if [[ ! -x "$VENV_DIR/bin/python" ]]; then
-  mkdir -p "$STATE_DIR"
-  "$PYTHON" -m venv "$VENV_DIR"
-fi
-PYTHON="$VENV_DIR/bin/python"
-
-echo "Using Python: $PYTHON"
-
-"$PYTHON" -m pip install --upgrade pip setuptools wheel
-if "$PYTHON" -m pip install -e "$ROOT_DIR"; then
-  :
-else
-  echo "Editable install failed; falling back to non-editable install."
-  "$PYTHON" -m pip install "$ROOT_DIR"
-fi
+mkdir -p "$STATE_DIR"
 
 echo "Starting Mini Miloco HTTP server..."
 echo "URL: http://$HOST:$PORT$PATH_PREFIX"
