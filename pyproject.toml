@@ -16,6 +16,15 @@ dependencies = [
   "fastmcp>=2.11",
   "imageio>=2.34",
   "imageio-ffmpeg>=0.5",
+  "aiocache>=0.12",
+  "aiofiles>=24.1",
+  "aiohttp>=3.12.14",
+  "psutil>=7.0.0",
+  "pydantic>=2.4.0",
+  "zeroconf>=0.147",
+  "av>=15.0",
+  "pillow>=10.3.0",
+  "toml>=0.10.2",
 ]
 
 [project.scripts]
