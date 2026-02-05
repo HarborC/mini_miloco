@@ -44,7 +44,13 @@ fi
 
 echo "Using Python: $PYTHON"
 
-"$PYTHON" -m pip install -e "$ROOT_DIR"
+"$PYTHON" -m pip install --upgrade pip setuptools wheel
+if "$PYTHON" -m pip install -e "$ROOT_DIR"; then
+  :
+else
+  echo "Editable install failed; falling back to non-editable install."
+  "$PYTHON" -m pip install "$ROOT_DIR"
+fi
 
 echo "Starting Mini Miloco HTTP server..."
 echo "URL: http://$HOST:$PORT$PATH_PREFIX"
