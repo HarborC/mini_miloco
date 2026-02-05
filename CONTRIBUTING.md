@@ -12,7 +12,7 @@ pip install -e ".[dev]"
 ## Local Run
 ```bash
 mini-miloco-auth --cloud-server cn
-mini-miloco-http --token-file config/miot_oauth.json --host 127.0.0.1 --port 9000
+mini-miloco-http --token-file config/miot_oauth.json --host 127.0.0.1 --port 2324
 ```
 
 ## Notes

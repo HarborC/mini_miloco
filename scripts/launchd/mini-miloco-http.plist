@@ -13,7 +13,7 @@
       <string>--host</string>
       <string>127.0.0.1</string>
       <string>--port</string>
-      <string>9000</string>
+      <string>2324</string>
       <string>--path</string>
       <string>/mcp</string>
     </array>
