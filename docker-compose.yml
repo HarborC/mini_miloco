@@ -4,7 +4,6 @@ services:
     image: mini-miloco:local
     container_name: mini-miloco
     restart: unless-stopped
-    ports:
-      - "2324:2324"
+    network_mode: host
     volumes:
       - "${HOME}/.mini-miloco:/data"
