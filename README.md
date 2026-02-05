@@ -1,6 +1,6 @@
-# Mini Miloco MCP (HTTP)
+# Mini Miloco MCP
 
-Xiaomi MIoT MCP 服务（HTTP），支持设备控制、场景触发、摄像头抓图/录制。
+Xiaomi MIoT MCP 服务，支持设备控制、场景触发、摄像头抓图/录制。
 
 ## 功能
 - 设备控制：列设备、读写属性、执行动作
