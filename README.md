@@ -43,9 +43,14 @@ bash scripts/start.sh
 ## Linux（Docker）
 先安装 Docker（可参考 `xiaomi-miloco/docs/environment-setup-linux_zh-Hans.md`）。
 
-在 `mini_miloco` 目录下构建并启动：
+在 `mini_miloco` 目录下构建并启动（首次需要 build，之后代码更新无需重建）：
 ```bash
 docker compose up -d --build
+```
+
+代码更新后直接重启即可：
+```bash
+docker compose restart
 ```
 
 查看日志：

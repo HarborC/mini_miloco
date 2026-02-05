@@ -1,9 +1,18 @@
 services:
   mini-miloco:
     build: .
-    image: mini-miloco:local
+    image: mini-miloco:dev
     container_name: mini-miloco
     restart: unless-stopped
     network_mode: host
+    working_dir: /app
+    command: >
+      bash -lc "python3 -m pip install -e . &&
+      mini-miloco-http --host 0.0.0.0 --port 2324 --path /mcp
+      --token-file /data/miot_oauth.json
+      --cache-dir /data/miot_cache
+      --camera-snapshot-dir /data/miot_camera_snapshots
+      --disable-lan"
     volumes:
+      - ".:/app"
       - "${HOME}/.mini-miloco:/data"
