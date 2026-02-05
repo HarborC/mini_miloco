@@ -27,6 +27,17 @@ claude mcp add xiaomi-miot --transport http http://127.0.0.1:2324/mcp
 ```
 
 ## 一键启动
+### curl | bash
+```bash
+curl -fsSL https://raw.githubusercontent.com/HarborC/mini_miloco/main/scripts/install.sh | bash
+```
+
+带参数示例：
+```bash
+curl -fsSL https://raw.githubusercontent.com/HarborC/mini_miloco/main/scripts/install.sh | bash -s -- --autostart
+```
+
+### 本地脚本
 ```bash
 bash scripts/start.sh
 ```
