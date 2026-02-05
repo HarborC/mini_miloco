@@ -12,7 +12,12 @@
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-mini-miloco-http --host 127.0.0.1 --port 2324 --path /mcp
+mkdir -p .cache
+mini-miloco-http \
+  --host 127.0.0.1 --port 2324 --path /mcp \
+  --token-file .cache/miot_oauth.json \
+  --cache-dir .cache/miot_cache \
+  --camera-snapshot-dir .cache/miot_camera_snapshots
 ```
 
 Linux 建议使用 Docker 方式启动，见下文。
@@ -21,7 +26,7 @@ Linux 建议使用 Docker 方式启动，见下文。
 - `http://127.0.0.1:2324/auth`
 
 授权文件默认保存到：
-- `~/.mini-miloco/miot_oauth.json`
+- `./.cache/miot_oauth.json`
 
 ## Claude Code 配置（HTTP）
 ```bash
@@ -63,7 +68,7 @@ docker compose logs -f
 - `http://127.0.0.1:2324/auth`
 
 数据会持久化到：
-- `~/.mini-miloco`
+- `./.cache`
 
 说明：
 - Docker 默认禁用 LAN discovery（`--disable-lan`）。如需局域网发现，可在 `docker-compose.yml` 中改为 `--enable-lan`，并考虑使用 `network_mode: host`。

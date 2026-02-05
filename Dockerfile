@@ -16,9 +16,3 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --upgrade pip setuptools wheel
-
-ENV MINI_MILOCO_STATE_DIR=/data
-ENV MINI_MILOCO_TOKEN_FILE=/data/miot_oauth.json
-
-VOLUME ["/data"]
-EXPOSE 2324

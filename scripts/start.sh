@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-STATE_DIR="${MINI_MILOCO_STATE_DIR:-$HOME/.mini-miloco}"
+STATE_DIR="${MINI_MILOCO_STATE_DIR:-$ROOT_DIR/.cache}"
 TOKEN_FILE="${MINI_MILOCO_TOKEN_FILE:-$STATE_DIR/miot_oauth.json}"
 HOST="${MINI_MILOCO_HOST:-127.0.0.1}"
 PORT="${MINI_MILOCO_PORT:-2324}"

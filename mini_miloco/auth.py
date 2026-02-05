@@ -89,7 +89,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Xiaomi MIoT OAuth helper")
     parser.add_argument("--cloud-server", default="cn", help="Cloud server region, e.g. cn/sg/us/ru/de/i2")
     parser.add_argument("--redirect-uri", default=DEFAULT_REDIRECT_URI, help="OAuth redirect URI")
-    parser.add_argument("--token-file", default="config/miot_oauth.json", help="Where to save OAuth info")
+    parser.add_argument("--token-file", default=".cache/miot_oauth.json", help="Where to save OAuth info")
     parser.add_argument("--uuid", default=None, help="Device uuid (auto-generated if omitted)")
     args = parser.parse_args()
 

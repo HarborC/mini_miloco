@@ -9,10 +9,9 @@ services:
     command: >
       bash -lc "python3 -m pip install -e . &&
       mini-miloco-http --host 127.0.0.1 --port 2324 --path /mcp
-      --token-file /data/miot_oauth.json
-      --cache-dir /data/miot_cache
-      --camera-snapshot-dir /data/miot_camera_snapshots
+      --token-file /app/.cache/miot_oauth.json
+      --cache-dir /app/.cache/miot_cache
+      --camera-snapshot-dir /app/.cache/miot_camera_snapshots
       --disable-lan"
     volumes:
       - ".:/app"
-      - "${HOME}/.mini-miloco:/data"

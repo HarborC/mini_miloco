@@ -11,18 +11,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="MIoT MCP HTTP server (devices/scenes/cameras)")
     parser.add_argument(
         "--token-file",
-        default="~/.mini-miloco/miot_oauth.json",
+        default=".cache/miot_oauth.json",
         help="OAuth token file",
     )
     parser.add_argument(
         "--cache-dir",
-        default="~/.mini-miloco/miot_cache",
+        default=".cache/miot_cache",
         help="Cache directory for MIoT specs",
     )
     parser.add_argument("--refresh-window", type=int, default=3600, help="Refresh token if expiring within seconds")
     parser.add_argument(
         "--camera-snapshot-dir",
-        default="~/.mini-miloco/miot_camera_snapshots",
+        default=".cache/miot_camera_snapshots",
         help="Directory to write camera snapshots",
     )
     parser.add_argument("--cloud-server", default="cn", help="Cloud server region, e.g. cn/sg/us/ru/de/i2")
