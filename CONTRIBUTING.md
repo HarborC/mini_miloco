@@ -6,13 +6,24 @@ Thanks for your interest in Mini Miloco.
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev]"
+pip install -e .
+mkdir -p .cache
 ```
 
 ## Local Run
 ```bash
-mini-miloco-auth --cloud-server cn
-mini-miloco-http --token-file config/miot_oauth.json --host 127.0.0.1 --port 2324
+mini-miloco-auth --cloud-server cn --token-file .cache/miot_oauth.json
+mini-miloco-http \
+  --token-file .cache/miot_oauth.json \
+  --cache-dir .cache/miot_cache \
+  --camera-snapshot-dir .cache/miot_camera_snapshots \
+  --host 127.0.0.1 --port 2324
+```
+
+## Linux (Docker)
+```bash
+bash scripts/setup_deps.sh
+docker compose up -d --build
 ```
 
 ## Notes
