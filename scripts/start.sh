@@ -15,20 +15,18 @@ PATH_PREFIX="${MINI_MILOCO_PATH:-/mcp}"
 CLOUD_SERVER="${MINI_MILOCO_CLOUD_SERVER:-cn}"
 REDIRECT_URI="${MINI_MILOCO_REDIRECT_URI:-https://mico.api.mijia.tech/login_redirect}"
 DEVICE_UUID="${MINI_MILOCO_UUID:-}"
-
-SHOW_LOGS=""
-for arg in "$@"; do
-  case "$arg" in
-    --logs)
-      SHOW_LOGS=1
-      ;;
-  esac
-done
+TMUX_SESSION="${MINI_MILOCO_TMUX_SESSION:-mini-miloco}"
 
 mkdir -p "$STATE_DIR"
 
 if [[ "$OS_NAME" == "Darwin" ]]; then
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "tmux is required on macOS. Please install tmux first."
+    exit 1
+  fi
+
   VENV_DIR="$ROOT_DIR/.venv"
+
   if [[ ! -d "$VENV_DIR" ]]; then
     python3 -m venv "$VENV_DIR"
   fi
@@ -42,16 +40,38 @@ if [[ "$OS_NAME" == "Darwin" ]]; then
     python -m pip install "$ROOT_DIR"
   fi
 
-  exec python -m mini_miloco.http \
-    --token-file "$TOKEN_FILE" \
-    --cache-dir "$CACHE_DIR" \
-    --camera-snapshot-dir "$CAMERA_DIR" \
-    --cloud-server "$CLOUD_SERVER" \
-    --redirect-uri "$REDIRECT_URI" \
-    ${DEVICE_UUID:+--uuid "$DEVICE_UUID"} \
-    --host "$HOST" \
-    --port "$PORT" \
-    --path "$PATH_PREFIX"
+  START_CMD=$(cat <<CMD
+set -euo pipefail
+cd "$ROOT_DIR"
+# shellcheck disable=SC1091
+source "$VENV_DIR/bin/activate"
+exec python -m mini_miloco.http \\
+  --token-file "$TOKEN_FILE" \\
+  --cache-dir "$CACHE_DIR" \\
+  --camera-snapshot-dir "$CAMERA_DIR" \\
+  --cloud-server "$CLOUD_SERVER" \\
+  --redirect-uri "$REDIRECT_URI" \\
+  ${DEVICE_UUID:+--uuid "$DEVICE_UUID"} \\
+  --host "$HOST" \\
+  --port "$PORT" \\
+  --path "$PATH_PREFIX"
+CMD
+)
+
+  if tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+    read -r -p "tmux session '$TMUX_SESSION' exists. Restart it? [y/N] " RESTART_TMUX
+    if [[ "$RESTART_TMUX" =~ ^[Yy]$ ]]; then
+      tmux kill-session -t "$TMUX_SESSION"
+    else
+      echo "Aborted."
+      exit 0
+    fi
+  fi
+
+  tmux new-session -d -s "$TMUX_SESSION" "bash -lc '$START_CMD'"
+  echo "Started Mini Miloco in tmux session: $TMUX_SESSION"
+  echo "Attach: tmux attach -t $TMUX_SESSION"
+  exit 0
 fi
 
 if [[ "$OS_NAME" == "Linux" ]]; then
@@ -62,9 +82,6 @@ if [[ "$OS_NAME" == "Linux" ]]; then
 
   cd "$ROOT_DIR"
   docker compose up -d --build
-  if [[ -n "$SHOW_LOGS" ]]; then
-    exec docker compose logs -f
-  fi
   echo "Mini Miloco is running via Docker."
   echo "URL: http://$HOST:$PORT$PATH_PREFIX"
   exit 0
