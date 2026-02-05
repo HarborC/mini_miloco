@@ -36,14 +36,18 @@ claude mcp add xiaomi-miot --transport http http://127.0.0.1:2324/mcp
 ## 启动
 ### 本地脚本（macOS / 本地）
 ```bash
-source .venv/bin/activate
 bash scripts/start.sh
 ```
 
-常用参数：
-- `bash scripts/start.sh --autostart` 生成开机自启
-- `bash scripts/start.sh --autostart-uninstall` 移除自启
-- `bash scripts/start.sh --add-claude` 添加 Claude MCP 配置
+### 本地脚本（Linux / Docker）
+```bash
+bash scripts/start.sh
+```
+
+查看容器日志：
+```bash
+bash scripts/start.sh --logs
+```
 
 ## Linux（Docker）
 先安装 Docker（可参考 `xiaomi-miloco/docs/environment-setup-linux_zh-Hans.md`）。
