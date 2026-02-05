@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mini-miloco"
+version = "0.1.0"
+description = "Mini Miloco MCP (HTTP) for Xiaomi Home devices, scenes, and cameras."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE.md"}
+authors = [
+  {name = "HarborC"},
+]
+dependencies = [
+  "fastmcp>=2.11",
+  "imageio>=2.34",
+  "imageio-ffmpeg>=0.5",
+]
+
+[project.scripts]
+mini-miloco-auth = "mini_miloco.auth:main"
+mini-miloco-http = "mini_miloco.http:main"
+
+
+[tool.setuptools]
+packages = {find = {where = ["."]}}
+include-package-data = true
+license-files = ["LICENSE.md", "NOTICE.md"]
+
+[tool.setuptools.package-data]
+miot = ["**/*.yaml", "**/*.json", "**/*.txt"]

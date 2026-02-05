@@ -1,0 +1,5 @@
+include LICENSE.md
+include NOTICE.md
+include README.md
+include CONTRIBUTING.md
+recursive-include miot_kit/miot *.yaml *.json *.txt
